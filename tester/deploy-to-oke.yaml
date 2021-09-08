@@ -1,0 +1,27 @@
+# ISV Serverless Nodepool Tagger, Ed Shnekendorf, September 2021
+# Copyright (c) 2021 Oracle and/or its affiliates.
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: docker-os-tester
+  labels:
+    app: docker-os-tester
+spec:
+  replicas: 1
+  selector:
+      matchLabels:
+        app: docker-os-tester
+  template:
+    metadata:
+      labels:
+        app: docker-os-tester
+        version: v1
+    spec:
+      containers:
+      - name: docker-os-tester
+        image: myregion.ocir.io/mytenancyname/isv/docker-os-tester:latest
+        imagePullPolicy: IfNotPresent
+      nodeSelector:
+        name: pool-a
+      imagePullSecrets:
+        - name: ocirsecret
